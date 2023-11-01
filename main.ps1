@@ -17,6 +17,7 @@
     TODO:
         - Make a check Powershell are using version 7+
         - Make a check that system are windows
+        - Check if mod unpacked files includes other zip files
         - Remove mod if not included in the manifest.json from BepInEx/plugins
         - Clear code and optimize
 
