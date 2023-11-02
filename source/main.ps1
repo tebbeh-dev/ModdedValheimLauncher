@@ -15,11 +15,11 @@
     there should not be very advanced, then its not good enough!
 
     TODO:
-    - Check if mod unpacked files includes other zip files
-    - Remove mod if not included in the manifest.json from BepInEx/plugins
     - Clear code and optimize
     
     DONE:
+    - Remove mod if not included in the manifest.json from BepInEx/plugins
+    - Check if mod unpacked files includes other zip files
     - Implement version in manifest.json instead of main file to make check if current runned version is latest to automaticlly update files
     - Make a check that system are windows
     - Make a check Powershell are using version 7+
@@ -233,9 +233,12 @@ function compareVersions {
             }
         }
 
+        $InstalledPluginsNotInManifest = Compare-Object $ManifestMods.Name $InstalledMods.Name | Where-Object { $_.SideIndicator -eq "=>" }
+
         [PSCustomObject]@{
-            BepInExInstalled = $true
-            compares         = $Compares
+            BepInExInstalled          = $true
+            compares                  = $Compares
+            notInManifestButInstalled = $InstalledPluginsNotInManifest
         }
         
         Write-Host ""
@@ -323,7 +326,7 @@ if ($manifest.core.updateBepInEx -eq "true") {
         Remove-Item $PreviousFiles -Recurse -Force -ErrorAction SilentlyContinue
         Remove-Item "$tempFolder\core" -Recurse -Force
 
-        Write-Host "✅"
+        Write-Host "DONE" -ForegroundColor Green
     }
     
     function downloadManifestMods {
@@ -341,7 +344,7 @@ if ($manifest.core.updateBepInEx -eq "true") {
 
                 Write-Host "Downloading new mod... " -ForegroundColor Yellow -NoNewline
                 Invoke-WebRequest -Uri $Mod.DownloadURL -OutFile "$($manifest.installPaths.valheimpath)\temp\$($Mod.Name).zip"
-                Write-Host "✅"
+                Write-Host "DONE" -ForegroundColor Green
             }
         }
         else {
@@ -352,12 +355,12 @@ if ($manifest.core.updateBepInEx -eq "true") {
                 if ($null -eq $Mod.CurrentVersion -or $Mod.CurrentVersion -eq '') {
                     Write-Host "Downloading new mod... " -ForegroundColor Yellow -NoNewline
                     Invoke-WebRequest -Uri $Mod.DownloadURL -OutFile "$($manifest.installPaths.valheimpath)\temp\$($Mod.Name).zip"
-                    Write-Host "✅"
+                    Write-Host "DONE" -ForegroundColor Green
                 }
                 else {
                     Write-Host "Downloading and updating mod... " -ForegroundColor Yellow -NoNewline
                     Invoke-WebRequest -Uri $Mod.DownloadURL -OutFile "$($manifest.installPaths.valheimpath)\temp\$($Mod.Name).zip"
-                    Write-Host "✅"
+                    Write-Host "DONE" -ForegroundColor Green
                 }
             }
         }
@@ -420,7 +423,7 @@ if ($manifest.core.updateBepInEx -eq "true") {
             # Remove empty folders in temp\unpack
             Get-ChildItem "$($manifest.installPaths.valheimpath)\temp\Unpack\" | Where-Object { $_.name -eq $ModName } | Remove-Item -Recurse -Force
 
-            Write-Host "✅"
+            Write-Host "DONE" -ForegroundColor Green
         }
 
         $BepInExInstalledUpdate = $True
@@ -458,16 +461,29 @@ if ($manifest.core.updateBepInEx -eq "true") {
 
                 }
                 else {
+                    # Check if there is zip files in unpacked mod
+                    if ((Get-ChildItem "$($manifest.installPaths.valheimpath)\temp\Unpack\$ModName").name -like "*.zip") {
+                        $pluginFiles = Get-ChildItem "$($manifest.installPaths.valheimpath)\temp\Unpack\$ModName"
+                        $zip = $pluginFiles | Where-Object { $_.Name -like "*.zip" }
 
-                    $pluginFiles = Get-ChildItem "$($manifest.installPaths.valheimpath)\temp\Unpack\$ModName"
-                    $Folder = New-Item -Path "$($manifest.installPaths.valheimpath)\temp\plugins\$ModName" -ItemType Directory
-                    Get-ChildItem $pluginFiles | Move-Item -Destination $Folder
+                        Expand-Archive -Path $zip -DestinationPath ($zip.fullname).split($zip.Name)[0]
+
+                        $Folder = New-Item -Path "$($manifest.installPaths.valheimpath)\temp\plugins\$ModName" -ItemType Directory
+
+                        $pluginFiles = Get-ChildItem "$($manifest.installPaths.valheimpath)\temp\Unpack\$ModName"
+                        Get-ChildItem $pluginFiles | Move-Item -Destination $Folder
+                    }
+                    else {
+                        $pluginFiles = Get-ChildItem "$($manifest.installPaths.valheimpath)\temp\Unpack\$ModName"
+                        $Folder = New-Item -Path "$($manifest.installPaths.valheimpath)\temp\plugins\$ModName" -ItemType Directory
+                        Get-ChildItem $pluginFiles | Move-Item -Destination $Folder
+                    } 
                 }
 
                 # Remove empty folders in temp\unpack
                 Get-ChildItem "$($manifest.installPaths.valheimpath)\temp\Unpack\" | Where-Object { $_.name -eq $ModName } | Remove-Item -Recurse -Force
 
-                Write-Host "✅"
+                Write-Host "DONE" -ForegroundColor Green
             }
 
             $BepInExInstalledUpdate = $False
@@ -476,6 +492,18 @@ if ($manifest.core.updateBepInEx -eq "true") {
             Write-Host "Everything up to date!" -ForegroundColor Green; Write-Host ""
             startGame
             break
+        }
+    }
+
+    # Check if Mods should be deleted
+    if ($Compares.notInManifestButInstalled) {
+        Write-Host ""
+        Write-Host "Found installed mods that are not in manifest" -ForegroundColor Yellow
+        # Get that folder in plugins and remove it
+        foreach ($NotUsedMod in $Compares.notInManifestButInstalled) {
+            Write-Host "[$($NotUsedMod.InputObject)] " -NoNewline -ForegroundColor Magenta; Write-Host " Deleting mod ... " -NoNewline
+            Get-ChildItem "$($manifest.installPaths.valheimpath)\BepInEx\plugins" | ? {$_.Name -eq $NotUsedMod.InputObject} | Remove-Item -Recurse -Force
+            Write-Host "DONE" -ForegroundColor Green
         }
     }
 }
