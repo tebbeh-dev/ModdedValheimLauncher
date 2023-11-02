@@ -4,6 +4,7 @@
     "valheimpath": "E:\\SteamLibrary\\steamapps\\common\\Valheim"
   },
   "core": {
+    "launcherVersion": "1.0",
     "updateBepInEx": "true"
   },
   "mods": [
@@ -30,6 +31,5 @@
     "https://valheim.thunderstore.io/package/blacks7ar/FoodDurationMultiplier/",
     "https://valheim.thunderstore.io/package/FXCK_U2/BiggerMinimapDiscoveryRadius/",
     "https://valheim.thunderstore.io/package/Advize/PlantEverything/"
-  ],
-  "version": "1.0"
+  ]
 }
