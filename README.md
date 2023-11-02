@@ -13,7 +13,7 @@ A game launcher made for modded Valheim. I would recommend using this in a fresh
 3. Set 'updateBepInEx' to true (false doesn't work for now).
 4. For the 'mods' section, add your specific mods exactly as I did. Each mod is pulled from the Thunderstore API, so we need to use Thunderstore. All the mods in the current list are the ones that my friends and I are currently using, along with some specific configurations.
 
-- Run 'Launcher.bat.'
+- Run 'start_game.bat'
 
 # How It Works
 - It will simply check if you have BepInEx installed or not.
