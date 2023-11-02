@@ -1,22 +1,21 @@
-# ModdedValheimLauncher
-A game launcher made for modded Valheim.
-I would recommend to use this in a fresh Valheim folder.
+# Modded Valheim Launcher
+A game launcher made for modded Valheim. I would recommend using this in a fresh Valheim folder.
 
 # Requirements
-- Runs on Powershell and specific Powershell version 7+ (https://github.com/PowerShell/PowerShell/releases)
-- Only on Windows clients right now
+- Runs on PowerShell and requires PowerShell version 7+ (https://github.com/PowerShell/PowerShell/releases).
+- Currently available only for Windows clients.
 
-# How to use
-Configure 'manifest.json' by:
-1. Set Steam path
-2. Set Valheim path
-3. updateBepInEx = true (false doesnt work for now)
-4. mods = add your specific mods exactly as I did. Each mod are pulled by Thunderstore API so in this case we need to use Thunderstore. All mods in current list are what me and my friends currently use together with some specific configuration.
+# How to Use
+- To configure 'manifest.json,' follow these steps:
 
-Run Launcher.bat
+1. Set the Steam path.
+2. Set the Valheim path.
+3. Set 'updateBepInEx' to true (false doesn't work for now).
+4. For the 'mods' section, add your specific mods exactly as I did. Each mod is pulled from the Thunderstore API, so we need to use Thunderstore. All the mods in the current list are the ones that my friends and I are currently using, along with some specific configurations.
 
-# How it works
-- It will simply do checks if you have BepInEx or not
-- If you have BepInEx it will check if its latest version, otherwise it will download and then download every mod if its outdated or not exist based on your manifest.json.
-- When everything seems fine it will start Valheim automaticly together with all your mods.
-Simple as that!
+- Run 'Launcher.bat.'
+
+# How It Works
+- It will simply check if you have BepInEx installed or not.
+- If you have BepInEx, it will check if it's the latest version; otherwise, it will download the latest version and then download every mod if it's outdated or doesn't exist based on your 'manifest.json.'
+- When everything appears fine, it will automatically start Valheim along with all your mods. It's as simple as that!
