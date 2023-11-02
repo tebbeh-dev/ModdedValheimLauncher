@@ -446,7 +446,7 @@ if ($manifest.core.updateBepInEx -eq "true") {
                 $ModName = ($Mod.Name).Split(".zip")[0]
 
                 Write-Host $ModName -ForegroundColor Cyan -NoNewline
-                Write-Host " Unpacking... " -ForegroundColor Yellow -NoNewline
+                Write-Host " Unpacking and Installing... " -ForegroundColor Yellow -NoNewline
 
                 Expand-Archive -Path $Mod -DestinationPath "$($manifest.installPaths.valheimpath)\temp\Unpack\$ModName"
             
