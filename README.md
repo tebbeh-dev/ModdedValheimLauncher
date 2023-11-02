@@ -1,5 +1,5 @@
 # Modded Valheim Launcher
-A game launcher made for modded Valheim. I would recommend using this in a fresh Valheim folder.
+A game launcher made for modded Valheim. **I would recommend using this in a fresh Valheim folder**.
 
 **ATTENTION**
 manifest.json (https://github.com/tebbeh-dev/ModdedValheimLauncher/blob/main/manifest.json) will always be up to date with what me and my friends are using. Make sure to change those values to what you prefer (Make sure to read https://github.com/tebbeh-dev/ModdedValheimLauncher#how-to-use).
