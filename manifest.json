@@ -4,7 +4,6 @@
     "valheimpath": "E:\\SteamLibrary\\steamapps\\common\\Valheim"
   },
   "core": {
-    "launcherVersion": "1.0",
     "updateBepInEx": "true"
   },
   "mods": [

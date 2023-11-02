@@ -28,7 +28,7 @@
     - When checking for version on installed mods, if bad structure manifest will be outside plugins folder.
 #>
 
-$Version = "1.0"
+$Version = (Get-Content version.json | ConvertFrom-Json).version
 $Author = "tebbeh"
 $LastUpdated = "2023-11-02"
 
@@ -85,6 +85,21 @@ if (-not ($PSVersionTable.PSVersion.Major -ge 7)) {
     Write-Host "ERROR" -ForegroundColor Red
     Write-Host "You need to run a Powershell version newer than 7." -ForegroundColor Cyan
     Write-Host "Follow this link to upgrade (https://github.com/PowerShell/PowerShell/releases)." -ForegroundColor Cyan
+    break
+}
+else {
+    Write-Host "OK" -ForegroundColor Green
+}
+
+Write-Host "Testing Launcher verison... " -NoNewline -ForegroundColor Yellow
+# Check if Launcher is up to date
+if (13 -ne ((Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tebbeh-dev/ModdedValheimLauncher/main/manifest.json").content | ConvertFrom-Json).core.launcherVersion) {
+    Write-Host "Launcher is outdated" -ForegroundColor Cyan
+    Write-Host "Downloading newer version of launcher, you dont need to do anything!" -ForegroundColor Cyan
+
+    Start-Sleep 5
+
+    Start-Process "$PSScriptRoot\updater.bat"
     break
 }
 else {
@@ -379,7 +394,7 @@ if ($manifest.core.updateBepInEx -eq "true") {
             $ModName = ($Mod.Name).Split(".zip")[0]
 
             Write-Host $ModName -ForegroundColor Cyan -NoNewline
-            Write-Host " Unpacking... " -ForegroundColor Yellow -NoNewline
+            Write-Host " Unpacking and Installing... " -ForegroundColor Yellow -NoNewline
 
             Expand-Archive -Path $Mod -DestinationPath "$($manifest.installPaths.valheimpath)\temp\Unpack\$ModName"
             
