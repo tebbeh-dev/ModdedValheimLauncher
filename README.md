@@ -1,8 +1,8 @@
 # Modded Valheim Launcher
 A game launcher made for modded Valheim. I would recommend using this in a fresh Valheim folder.
 
-*ATTENTION*
-manifest.json (https://github.com/tebbeh-dev/ModdedValheimLauncher/blob/main/manifest.json) will always be up to date with what me and my friends are using. Make sure to change those values to what you prefer.
+**ATTENTION**
+manifest.json (https://github.com/tebbeh-dev/ModdedValheimLauncher/blob/main/manifest.json) will always be up to date with what me and my friends are using. Make sure to change those values to what you prefer (Make sure to read https://github.com/tebbeh-dev/ModdedValheimLauncher#how-to-use).
 
 # Requirements
 - Runs on PowerShell and requires PowerShell version 7+ (https://github.com/PowerShell/PowerShell/releases).
@@ -26,3 +26,13 @@ manifest.json (https://github.com/tebbeh-dev/ModdedValheimLauncher/blob/main/man
 # Future
 - I will create a similar launcher for the small audience that use and play Valheim on Linux (Including myself ofcourse).
 - I will create a Server Mod updater similar to this launcher for both Linux and Windows Dedicated Hosted Servers for those who dont rent a server on a hosting company.
+- I will PROBABLY make this a GUI version aswell but my knowledge about design is very limited (Maybe a contributor/designer want to cooperate?).
+
+# Greetings
+Thanks to:
+- thebo
+- Backi
+- Gawith
+- Astro
+
+for bug and beta testing!
