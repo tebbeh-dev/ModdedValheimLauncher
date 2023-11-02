@@ -15,16 +15,16 @@
     there should not be very advanced, then its not good enough!
 
     TODO:
-        - Make a check Powershell are using version 7+
-        - Make a check that system are windows
-        - Check if mod unpacked files includes other zip files
-        - Remove mod if not included in the manifest.json from BepInEx/plugins
-        - Clear code and optimize
-
+    - Check if mod unpacked files includes other zip files
+    - Remove mod if not included in the manifest.json from BepInEx/plugins
+    - Clear code and optimize
+    
     DONE:
-        - Optimize version check directly by compare whats installed and whats on thunderstore directly
-        - Make Loop downloaded mods a function instead of reuse stupid code.
-        - When checking for version on installed mods, if bad structure manifest will be outside plugins folder.
+    - Make a check that system are windows
+    - Make a check Powershell are using version 7+
+    - Optimize version check directly by compare whats installed and whats on thunderstore directly
+    - Make Loop downloaded mods a function instead of reuse stupid code.
+    - When checking for version on installed mods, if bad structure manifest will be outside plugins folder.
 #>
 
 $Version = "1.0"
@@ -66,6 +66,29 @@ $ProgressPreference = 'SilentlyContinue' # Do not show download progress
 ##########################
 
 $manifest = Get-Content .\manifest.json | ConvertFrom-Json
+
+# Check if runned on Windows system
+Write-Host "Testing if running in Windows... " -NoNewline -ForegroundColor Yellow
+if (-not ($env:OS -like 'Windows_*')) {
+    Write-Host "ERROR" -ForegroundColor Red
+    Write-Host "You cannot currently run this launcher in other OS than Windows." -ForegroundColor Cyan
+    break
+}
+else {
+    Write-Host "OK" -ForegroundColor Green
+}
+
+# Check if Powershell is correct version
+Write-Host "Testing Powershell verison... " -NoNewline -ForegroundColor Yellow
+if (-not ($PSVersionTable.PSVersion.Major -ge 7)) {
+    Write-Host "ERROR" -ForegroundColor Red
+    Write-Host "You need to run a Powershell version newer than 7." -ForegroundColor Cyan
+    Write-Host "Follow this link to upgrade (https://github.com/PowerShell/PowerShell/releases)." -ForegroundColor Cyan
+    break
+}
+else {
+    Write-Host "OK" -ForegroundColor Green
+}
 
 ######################################
 ## Check Installed Paths if correct ##
