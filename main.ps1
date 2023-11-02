@@ -15,6 +15,7 @@
     there should not be very advanced, then its not good enough!
 
     TODO:
+    - Implement version in manifest.json instead of main file to make check if current runned version is latest to automaticlly update files
     - Check if mod unpacked files includes other zip files
     - Remove mod if not included in the manifest.json from BepInEx/plugins
     - Clear code and optimize
@@ -29,7 +30,7 @@
 
 $Version = "1.0"
 $Author = "tebbeh"
-$LastUpdated = "2023-11-01"
+$LastUpdated = "2023-11-02"
 
 #####################
 ## Welcome Message ##
