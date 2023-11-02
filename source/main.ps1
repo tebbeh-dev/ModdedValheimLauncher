@@ -15,12 +15,12 @@
     there should not be very advanced, then its not good enough!
 
     TODO:
-    - Implement version in manifest.json instead of main file to make check if current runned version is latest to automaticlly update files
     - Check if mod unpacked files includes other zip files
     - Remove mod if not included in the manifest.json from BepInEx/plugins
     - Clear code and optimize
     
     DONE:
+    - Implement version in manifest.json instead of main file to make check if current runned version is latest to automaticlly update files
     - Make a check that system are windows
     - Make a check Powershell are using version 7+
     - Optimize version check directly by compare whats installed and whats on thunderstore directly
@@ -28,7 +28,7 @@
     - When checking for version on installed mods, if bad structure manifest will be outside plugins folder.
 #>
 
-$Version = (Get-Content version.json | ConvertFrom-Json).version
+$Version = (Get-Content "$PSScriptRoot\version.json" | ConvertFrom-Json).version
 $Author = "tebbeh"
 $LastUpdated = "2023-11-02"
 
@@ -93,13 +93,14 @@ else {
 
 Write-Host "Testing Launcher verison... " -NoNewline -ForegroundColor Yellow
 # Check if Launcher is up to date
-if (13 -ne ((Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tebbeh-dev/ModdedValheimLauncher/main/manifest.json").content | ConvertFrom-Json).core.launcherVersion) {
+if ($Version -ne ((Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tebbeh-dev/ModdedValheimLauncher/main/source/version.json").content | ConvertFrom-Json).version) {
     Write-Host "Launcher is outdated" -ForegroundColor Cyan
     Write-Host "Downloading newer version of launcher, you dont need to do anything!" -ForegroundColor Cyan
 
     Start-Sleep 5
 
     Start-Process "$PSScriptRoot\updater.bat"
+
     break
 }
 else {
@@ -275,6 +276,7 @@ function startGame {
     thebo
     Backi
     Gawith
+    Astro
 
     For bug testing!
 "@ -ForegroundColor Cyan; Write-Host ""
