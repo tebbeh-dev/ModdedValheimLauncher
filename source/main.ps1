@@ -15,6 +15,7 @@
     there should not be very advanced, then its not good enough!
 
     TODO:
+    - Seperate mods from manifest.json to be able to update original mods if you want to play with me and my friends
     - Clear code and optimize
     
     DONE:
