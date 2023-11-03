@@ -67,7 +67,10 @@ $ProgressPreference = 'SilentlyContinue' # Do not show download progress
 ## Import manifest.json ##
 ##########################
 
-$manifest = Get-Content .\manifest.json | ConvertFrom-Json
+$manifest = Get-Content .\manifest.json -ErrorAction SilentlyContinue | ConvertFrom-Json
+if (-not ($manifest)) {
+    $manifest = Get-Content "$(($PSScriptRoot).Split("\source")[0])\manifest.json"
+}
 
 # Check if runned on Windows system
 Write-Host "Testing if running in Windows... " -NoNewline -ForegroundColor Yellow
