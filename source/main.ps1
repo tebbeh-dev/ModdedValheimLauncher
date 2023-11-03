@@ -288,7 +288,7 @@ function startGame {
     For bug testing!
 "@ -ForegroundColor Cyan; Write-Host ""
 
-    Read-Host "Press a key to close this window"
+    Read-Host "Press enter to close this window"
 }
 
 Write-Host ""
