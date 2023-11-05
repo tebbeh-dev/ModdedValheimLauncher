@@ -174,11 +174,26 @@ else {
 }
 
 function compareVersions {
-    
-    Write-Host "Getting information from all mods in 'manifest.json'... " -ForegroundColor Yellow -NoNewline
 
+    $Mods = $null
+
+    Write-Host "Checking where mods should get info from... " -ForegroundColor Yellow -NoNewline
+
+    if ($manifest.mods.git) {
+        $Mods = (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tebbeh-dev/ModdedValheimLauncher/main/mods.json" | ConvertFrom-Json).mods
+        Write-Host "Git" -ForegroundColor Green; Write-Host ""
+    }
+    else {
+        $Mods = (Get-Content .\mods.json -ErrorAction SilentlyContinue | ConvertFrom-Json).mods
+        if (-not ($manifest)) {
+            $Mods = (Get-Content "$(($PSScriptRoot).Split("\source")[0])\mods.json").mods
+        } 
+        Write-Host "mods.json" -ForegroundColor Green; Write-Host ""
+    }
+
+    Write-Host "Getting info for every mod from Thunderstore... " -ForegroundColor Yellow -NoNewline
     # Manifest Mods
-    $ManifestMods = foreach ($ManifestMod in $manifest.mods) {
+    $ManifestMods = foreach ($ManifestMod in $Mods) {
         $pluginAuthor = (($ManifestMod.split("/") | Where-Object { $_ -ne '' }).Trim())[-2]
         $pluginName = (($ManifestMod.split("/") | Where-Object { $_ -ne '' }).Trim())[-1]
         $result = (Invoke-WebRequest -Uri "https://thunderstore.io/api/experimental/package/$pluginAuthor/$pluginName/").Content | ConvertFrom-Json
@@ -193,7 +208,7 @@ function compareVersions {
         }
     }
 
-    Write-Host "OK" -ForegroundColor Green; Write-Host ""
+    Write-Host "OK" -ForegroundColor Green -NoNewline; Write-Host " ($($ManifestMods.count) mods loaded from Thunderstore)" -ForegroundColor Cyan; Write-Host ""
 
     Write-Host "Checking if BepInEx exists... " -ForegroundColor Yellow -NoNewline
 
@@ -245,7 +260,6 @@ function compareVersions {
             notInManifestButInstalled = $InstalledPluginsNotInManifest
         }
         
-        Write-Host ""
     }
     else {
 
@@ -284,6 +298,7 @@ function startGame {
     Backi
     Gawith
     Astro
+    Zhane
 
     For bug testing!
 "@ -ForegroundColor Cyan; Write-Host ""
@@ -506,7 +521,7 @@ if ($manifest.core.updateBepInEx -eq "true") {
         # Get that folder in plugins and remove it
         foreach ($NotUsedMod in $Compares.notInManifestButInstalled) {
             Write-Host "[$($NotUsedMod.InputObject)] " -NoNewline -ForegroundColor Magenta; Write-Host " Deleting mod ... " -NoNewline
-            Get-ChildItem "$($manifest.installPaths.valheimpath)\BepInEx\plugins" | ? {$_.Name -eq $NotUsedMod.InputObject} | Remove-Item -Recurse -Force
+            Get-ChildItem "$($manifest.installPaths.valheimpath)\BepInEx\plugins" | ? { $_.Name -eq $NotUsedMod.InputObject } | Remove-Item -Recurse -Force
             Write-Host "DONE" -ForegroundColor Green
         }
     }
