@@ -34,5 +34,6 @@ Thanks to:
 - Backi
 - Gawith
 - Astro
+- Zhane
 
 for bug and beta testing!
