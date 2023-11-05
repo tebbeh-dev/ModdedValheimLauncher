@@ -31,7 +31,7 @@
 
 $Version = (Get-Content "$PSScriptRoot\version.json" | ConvertFrom-Json).version
 $Author = "tebbeh"
-$LastUpdated = "2023-11-02"
+$LastUpdated = (Get-Content "$PSScriptRoot\version.json" | ConvertFrom-Json).lastUpdated
 
 #####################
 ## Welcome Message ##
