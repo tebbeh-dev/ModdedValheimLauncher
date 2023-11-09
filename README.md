@@ -15,6 +15,7 @@ manifest.json (https://github.com/tebbeh-dev/ModdedValheimLauncher/blob/main/man
 2. Set the Valheim path.
 3. Set 'updateBepInEx' to true (false doesn't work for now).
 4. Set 'mods' -> git -> to true or false. If its true script will always use mods that I push for me and my friends here (https://github.com/tebbeh-dev/ModdedValheimLauncher/blob/main/mods.json). If its false you can edit the mods.json file your own and script will check for those mods instead.
+5. Set 'mods' -> custom -> to true or false. If its true script will  
 
 - Run 'start_game.bat'
 
