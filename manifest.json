@@ -7,7 +7,7 @@
     "updateBepInEx": "true"
   },
   "mods": {
-    "git": "false",
-    "custom": "true"
+    "git": "true",
+    "custom": "false"
   }
 }
