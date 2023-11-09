@@ -176,10 +176,11 @@ else {
 function compareVersions {
 
     $Mods = $null
+    $customJson = $null
 
     Write-Host "Checking where mods should get info from... " -ForegroundColor Yellow -NoNewline
 
-    if ($manifest.mods.git) {
+    if ($manifest.mods.git -eq "true") {
         $Mods = (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tebbeh-dev/ModdedValheimLauncher/main/mods.json" | ConvertFrom-Json).mods
         Write-Host "Git" -ForegroundColor Green; Write-Host ""
     }
@@ -189,6 +190,65 @@ function compareVersions {
             $Mods = (Get-Content "$(($PSScriptRoot).Split("\source")[0])\mods.json").mods
         } 
         Write-Host "mods.json" -ForegroundColor Green; Write-Host ""
+    }
+
+    Write-Host "Checking if custom mods should be added... " -ForegroundColor Yellow -NoNewline
+
+    if ($manifest.mods.custom -eq "true") {
+
+        Write-Host "TRUE" -ForegroundColor Green; Write-Host ""
+
+        if ($manifest.mods.git -eq "true") {
+
+            $customJson = (((Get-Content .\custommods.json -ErrorAction SilentlyContinue) | ConvertFrom-Json).custommods) | Where-Object { $_ -ne $null -and $_ -ne '' }
+            if (-not ($customJson)) {
+                $customJson = ((Get-Content "$(($PSScriptRoot).Split("\source")[0])\custommods.json" -ErrorAction SilentlyContinue ).custommods) | Where-Object { $_ -ne $null -and $_ -ne '' }
+            }
+
+            if ($customJson) {
+                foreach ($custommod in $customJson) {
+                    if ($Mods) {
+                        if ($custommod -like "https://valheim.thunderstore.io/package/*") {
+                            $Mods += $custommod
+                        }
+                        else {
+                            Write-Host "There was a problem to load $($custommod) from custommods.json, make sure link is correct." -ForegroundColor Red
+                            Read-Host "Press enter to close this window"
+                            break
+                        }
+                    }
+                    else {
+                        if ($manifest.mods.git -eq "true") {
+                            Write-Host "There was a problem loading mods from Git" -ForegroundColor Red
+                            Read-Host "Press enter to close this window"
+                            break
+                        }
+                        elseif (-not ($manifest.mods.git -eq "true")) {
+                            Write-Host "There was a problem loading mods from mods.json" -ForegroundColor Red
+                            Read-Host "Press enter to close this window"
+                            break
+                        }
+                        else {
+                            Write-Host "There was a problem loading mods, please contact tebbeh at discord if you ever get this (tebbeh#0933)" -ForegroundColor Red
+                            Read-Host "Press enter to close this window"
+                            break
+                        }
+                    }
+                }
+            }
+            else {
+                if (-not ($customJson) -and $manifest.mods.custom -eq "true") {
+                    Write-Host "There was a problem loading custom mods. Please check custommods.json if it looks correct." -ForegroundColor Red
+                    Read-Host "Press enter to close this window"
+                    break
+                }
+            }
+        } else {
+            Write-Host "You have manifest -> mods -> custom set to true but git false." -ForegroundColor Red
+            Write-Host "If you dont want to use git then set git to false and use mods.json file for mod handling instead." -ForegroundColor Red
+            Read-Host "Press enter to close this window"
+            break
+        }
     }
 
     Write-Host "Getting info for every mod from Thunderstore... " -ForegroundColor Yellow -NoNewline
@@ -521,7 +581,7 @@ if ($manifest.core.updateBepInEx -eq "true") {
         # Get that folder in plugins and remove it
         foreach ($NotUsedMod in $Compares.notInManifestButInstalled) {
             Write-Host "[$($NotUsedMod.InputObject)] " -NoNewline -ForegroundColor Magenta; Write-Host " Deleting mod ... " -NoNewline
-            Get-ChildItem "$($manifest.installPaths.valheimpath)\BepInEx\plugins" | ? { $_.Name -eq $NotUsedMod.InputObject } | Remove-Item -Recurse -Force
+            Get-ChildItem "$($manifest.installPaths.valheimpath)\BepInEx\plugins" | Where-Object { $_.Name -eq $NotUsedMod.InputObject } | Remove-Item -Recurse -Force
             Write-Host "DONE" -ForegroundColor Green
         }
     }
