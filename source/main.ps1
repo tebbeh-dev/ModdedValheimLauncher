@@ -192,7 +192,7 @@ function compareVersions {
         Write-Host "mods.json" -ForegroundColor Green; Write-Host ""
     }
 
-    Write-Host "Checking if custom mods should be added... " -ForegroundColor Yellow -NoNewline
+    Write-Host "Checking if custom mods should be added... " -ForegroundColor Yellow
 
     if ($manifest.mods.custom -eq "true") {
 
@@ -252,6 +252,7 @@ function compareVersions {
     }
 
     Write-Host "Getting info for every mod from Thunderstore... " -ForegroundColor Yellow -NoNewline
+
     # Manifest Mods
     $ManifestMods = foreach ($ManifestMod in $Mods) {
         $pluginAuthor = (($ManifestMod.split("/") | Where-Object { $_ -ne '' }).Trim())[-2]
