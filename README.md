@@ -25,6 +25,7 @@ manifest.json (https://github.com/tebbeh-dev/ModdedValheimLauncher/blob/main/man
 
 **Linux**
 - Run 'start_game.sh' (Make sure you have permission to run this file ``chmod +x start_game.sh``)
+- You need to set this as launch options ``./start_game_bepinex.sh %command%`` in steam. Right click on the game -> Properties -> General -> Launch options.
 
 # How It Works
 - It will simply check if you have BepInEx installed or not.
