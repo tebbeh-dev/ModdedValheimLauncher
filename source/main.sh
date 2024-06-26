@@ -1,35 +1,5 @@
-#!/bin/bash
-
-# This script will match 'manifest.json' data with whats actually
-# exist in the root Valheim BepInEx Plugin folder and whats currently
-# on Thunderstore. If there is differences it will update automaticly.
-
-# Its was orignially created for me and my friends but might be useful
-# for others aswell.
-
-# I will be working on a Dedicated Server side solution aswell in the
-# future.
-
-# INSTALLATION:
-# Everything you need to know will be in the README file but to be honest
-# there should not be very advanced, then its not good enough!
-
-# TODO:
-# - Seperate mods from manifest.json to be able to update original mods if you want to play with me and my friends
-# - Clear code and optimize
-
-# DONE:
-# - Remove mod if not included in the manifest.json from BepInEx/plugins
-# - Check if mod unpacked files includes other zip files
-# - Implement version in manifest.json instead of main file to make check if current runned version is latest to automaticlly update files
-# - Make a check that system are windows
-# - Make a check Powershell are using version 7+
-# - Optimize version check directly by compare whats installed and whats on thunderstore directly
-# - Make Loop downloaded mods a function instead of reuse stupid code.
-# - When checking for version on installed mods, if bad structure manifest will be outside plugins folder.
-
 # Load version and author info
-VERSION=$(jq -r '.version' version.json)
+VERSION=$(jq -r '.linuxversion' version.json)
 AUTHOR="tebbeh"
 LAST_UPDATED=$(jq -r '.lastUpdated' version.json)
 
@@ -67,7 +37,6 @@ if [[ -z "$manifest" ]]; then
     manifest=$(jq '.' "$(dirname "$0")/../manifest.json")
 fi
 
-
 ############################
 ## Check if running Linux ##
 ############################
@@ -92,6 +61,31 @@ if ! command -v jq &> /dev/null; then
     exit 1
 else
     echo -e "\e[32mOK\e[0m"
+fi
+
+#########################################
+## Check if launcher is latest version ##
+#########################################
+
+echo -n "Testing Launcher version... "
+# Check if Launcher is up to date
+
+REMOTE_VERSION=$(curl -s "https://raw.githubusercontent.com/tebbeh-dev/ModdedValheimLauncher/main/source/version.json" | jq -r '.linuxversion')
+
+echo $VERSION
+echo $REMOTE_VERSION
+
+if [[ "$VERSION" != "$REMOTE_VERSION" ]]; then
+    echo -e "\033[0;36mLauncher is outdated\033[0m"
+    echo -e "\033[0;36mDownloading newer version of launcher, you don't need to do anything!\033[0m"
+
+    sleep 5
+
+    bash ./update.sh
+
+    exit 0
+else
+    echo -e "\033[0;32mOK\033[0m"
 fi
 
 ######################################

@@ -1,35 +1,5 @@
-<#
-
-    This script will match 'manifest.json' data with whats actually
-    exist in the root Valheim BepInEx Plugin folder and whats currently
-    on Thunderstore. If there is differences it will update automaticly.
-
-    Its was orignially created for me and my friends but might be useful
-    for others aswell.
-
-    I will be working on a Dedicated Server side solution aswell in the
-    future.
-
-    INSTALLATION:
-    Everything you need to know will be in the README file but to be honest
-    there should not be very advanced, then its not good enough!
-
-    TODO:
-    - Seperate mods from manifest.json to be able to update original mods if you want to play with me and my friends
-    - Clear code and optimize
-    
-    DONE:
-    - Remove mod if not included in the manifest.json from BepInEx/plugins
-    - Check if mod unpacked files includes other zip files
-    - Implement version in manifest.json instead of main file to make check if current runned version is latest to automaticlly update files
-    - Make a check that system are windows
-    - Make a check Powershell are using version 7+
-    - Optimize version check directly by compare whats installed and whats on thunderstore directly
-    - Make Loop downloaded mods a function instead of reuse stupid code.
-    - When checking for version on installed mods, if bad structure manifest will be outside plugins folder.
-#>
-
-$Version = (Get-Content "$PSScriptRoot\version.json" | ConvertFrom-Json).version
+# Load version and author info
+$Version = (Get-Content "$PSScriptRoot\version.json" | ConvertFrom-Json).windowsversion
 $Author = "tebbeh"
 $LastUpdated = (Get-Content "$PSScriptRoot\version.json" | ConvertFrom-Json).lastUpdated
 
