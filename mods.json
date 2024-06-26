@@ -1,7 +1,6 @@
 {
   "mods": [
     "https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/",
-    "https://valheim.thunderstore.io/package/RandyKnapp/Auga/",
     "https://valheim.thunderstore.io/package/RandyKnapp/EquipmentAndQuickSlots/",
     "https://valheim.thunderstore.io/package/Smoothbrain/CreatureLevelAndLootControl/",
     "https://valheim.thunderstore.io/package/Smoothbrain/ConversionSizeAndSpeed/",
@@ -25,17 +24,10 @@
     "https://valheim.thunderstore.io/package/Smoothbrain/DarwinAwards/",
     "https://valheim.thunderstore.io/package/tebbeh/TebFireTweaks/",
     "https://valheim.thunderstore.io/package/tebbeh/TebBoatTweaks/",
-    "https://valheim.thunderstore.io/package/tebbeh/TebArrowsQoL/",
     "https://valheim.thunderstore.io/package/blacks7ar/FoodDurationMultiplier/",
     "https://valheim.thunderstore.io/package/ComfyMods/ComfySigns/",
     "https://valheim.thunderstore.io/package/VentureValheim/Venture_Floating_Items/",
     "https://valheim.thunderstore.io/package/aedenthorn_mods/InstantMonsterLootDrop/",
-    "https://valheim.thunderstore.io/package/Therzie/Armory/",
-    "https://valheim.thunderstore.io/package/Therzie/Monstrum/",
-    "https://valheim.thunderstore.io/package/Therzie/MonstrumAshlands/",
-    "https://valheim.thunderstore.io/package/Therzie/MonstrumDeepNorth/",
-    "https://valheim.thunderstore.io/package/Therzie/Warfare/",
-    "https://valheim.thunderstore.io/package/Therzie/WarfareFireAndIce/",
     "https://valheim.thunderstore.io/package/Tequila/Dvergr_Pieces/",
     "https://valheim.thunderstore.io/package/KGvalheim/Valheim_Enchantment_System/",
     "https://valheim.thunderstore.io/package/Xutz/ValheimCuisine/"
